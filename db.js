@@ -15,18 +15,8 @@ connection.connect((err) => {
   }
   console.log("Connected to MySQL database.");
 
-  // 💥 Drop table first to fix any broken AUTO_INCREMENT
-  const dropTableQuery = `DROP TABLE IF EXISTS schools`;
-
-  connection.query(dropTableQuery, (err) => {
-    if (err) {
-      console.error("Error dropping table:", err.message);
-      return;
-    }
-    console.log("Old 'schools' table dropped.");
-
-    // ✅ Now create fresh table with proper AUTO_INCREMENT
-    const createTableQuery = `
+  // ✅ Now create fresh table with proper AUTO_INCREMENT
+  const createTableQuery = `
       CREATE TABLE schools (
         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
@@ -36,13 +26,12 @@ connection.connect((err) => {
       );
     `;
 
-    connection.query(createTableQuery, (err) => {
-      if (err) {
-        console.error("Error creating table:", err.message);
-        return;
-      }
-      console.log("Fresh 'schools' table created.");
-    });
+  connection.query(createTableQuery, (err) => {
+    if (err) {
+      console.error("Error creating table:", err.message);
+      return;
+    }
+    console.log("Fresh 'schools' table created.");
   });
 });
 
