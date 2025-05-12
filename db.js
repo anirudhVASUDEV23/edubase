@@ -15,33 +15,33 @@ connection.connect((err) => {
   }
   console.log("Connected to MySQL database.");
 
-  // Create table if it doesn't exist (without 'distance' column)
-  const createTableQuery = `
-    CREATE TABLE IF NOT EXISTS schools (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      name VARCHAR(255),
-      address VARCHAR(255),
-      latitude DOUBLE,
-      longitude DOUBLE
-    );
-  `;
+  // 💥 Drop table first to fix any broken AUTO_INCREMENT
+  const dropTableQuery = `DROP TABLE IF EXISTS schools`;
 
-  connection.query(createTableQuery, (err) => {
+  connection.query(dropTableQuery, (err) => {
     if (err) {
-      console.error("Error creating table:", err.message);
+      console.error("Error dropping table:", err.message);
       return;
     }
-    console.log("Table 'schools' is ready.");
+    console.log("Old 'schools' table dropped.");
 
-    // Reset the AUTO_INCREMENT counter (optional, if needed)
-    const resetAutoIncrementQuery = `ALTER TABLE schools AUTO_INCREMENT = 1;`;
+    // ✅ Now create fresh table with proper AUTO_INCREMENT
+    const createTableQuery = `
+      CREATE TABLE schools (
+        id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        address VARCHAR(255) NOT NULL,
+        latitude DOUBLE NOT NULL,
+        longitude DOUBLE NOT NULL
+      );
+    `;
 
-    connection.query(resetAutoIncrementQuery, (err) => {
+    connection.query(createTableQuery, (err) => {
       if (err) {
-        console.error("Error resetting AUTO_INCREMENT:", err.message);
+        console.error("Error creating table:", err.message);
         return;
       }
-      console.log("AUTO_INCREMENT reset to 1.");
+      console.log("Fresh 'schools' table created.");
     });
   });
 });
