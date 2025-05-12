@@ -32,6 +32,17 @@ connection.connect((err) => {
       return;
     }
     console.log("Table 'schools' is ready.");
+
+    // Reset the AUTO_INCREMENT counter (optional, if needed)
+    const resetAutoIncrementQuery = `ALTER TABLE schools AUTO_INCREMENT = 1;`;
+
+    connection.query(resetAutoIncrementQuery, (err) => {
+      if (err) {
+        console.error("Error resetting AUTO_INCREMENT:", err.message);
+        return;
+      }
+      console.log("AUTO_INCREMENT reset to 1.");
+    });
   });
 });
 
