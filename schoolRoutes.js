@@ -31,7 +31,7 @@ router.post("/addSchool", (req, res) => {
 
   db.query(query, [name, address, latitude, longitude], (err, result) => {
     if (err) return res.status(500).json({ error: err.message });
-    res.json({ message: "School added successfully", id: result.insertId });
+    res.json({ message: "School added successfully" });
   });
 });
 
